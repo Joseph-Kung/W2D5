@@ -16,13 +16,14 @@ class HashSet
   end
 
   private
+  attr_accessor :store
 
   def [](num)
-    # optional but useful; return the bucket corresponding to `num`
+    store[num.hash % num_buckets] = num
   end
 
   def num_buckets
-    @store.length
+    store.length
   end
 
   def resize!

@@ -9,9 +9,13 @@ class MaxIntSet
   end
 
   def remove(num)
+    raise 'Out of bounds' unless num.between?(0, store.length - 1)
+    store[num] = false
   end
 
   def include?(num)
+    raise 'Out of bounds' unless num.between?(0, store.length - 1)
+    store[num]
   end
 
   private

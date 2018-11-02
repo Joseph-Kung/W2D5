@@ -20,7 +20,14 @@ class Node
 end
 
 class LinkedList
+  attr_reader :head, :tail
+
   def initialize
+    @head = Node.new
+    @tail = Node.new
+
+    @head.next = @tail
+    @tail.prev = @head
   end
 
   def [](i)
@@ -29,12 +36,15 @@ class LinkedList
   end
 
   def first
+    head
   end
 
   def last
+    tail
   end
 
   def empty?
+    head.next == tail
   end
 
   def get(key)

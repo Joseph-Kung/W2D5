@@ -1,3 +1,5 @@
+require 'byebug'
+
 class Node
   attr_reader :key
   attr_accessor :val, :next, :prev
@@ -20,6 +22,7 @@ class Node
 end
 
 class LinkedList
+  include Enumerable
   attr_reader :head, :tail
 
   def initialize
@@ -36,11 +39,11 @@ class LinkedList
   end
 
   def first
-    head
+    head.next
   end
 
   def last
-    tail
+    tail.prev
   end
 
   def empty?
@@ -54,15 +57,33 @@ class LinkedList
   end
 
   def append(key, val)
+    new_node = Node.new(key, val)
+
+    tail.prev.next = new_node
+    new_node.prev = tail.prev
+
+    tail.prev = new_node
+    new_node.next = tail
+
+    new_node
   end
 
   def update(key, val)
   end
 
   def remove(key)
+
   end
 
-  def each
+  def each(&prc)
+    current_node = head
+
+    until current_node.next == tail
+      current_node = current_node.next
+      prc.call(current_node)
+    end
+
+    self
   end
 
   # uncomment when you have `each` working and `Enumerable` included

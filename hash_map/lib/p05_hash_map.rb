@@ -1,4 +1,5 @@
 require_relative 'p04_linked_list'
+require "byebug"
 
 class HashMap
   include Enumerable
@@ -15,7 +16,16 @@ class HashMap
 
   def set(key, val)
     list = store[key.hash % num_buckets]
-    list.update(key, val) if list.include?(key)
+
+    if list.include?(key)
+      return list.update(key, val)
+    end
+
+    self.count += 1
+
+    if self.count > num_buckets
+      resize!
+    end
 
     list.append(key, val)
   end
@@ -25,6 +35,7 @@ class HashMap
   end
 
   def delete(key)
+    self.count -= 1
     store[key.hash % num_buckets].remove(key)
   end
 
@@ -48,13 +59,21 @@ class HashMap
   alias_method :[]=, :set
 
   private
-  attr_reader :store
+  attr_accessor :store
 
   def num_buckets
     store.length
   end
 
   def resize!
+    # byebug
+    new_store = Array.new(num_buckets * 2) { LinkedList.new }
+
+    self.each do |k, v|
+      new_store[k.hash % new_store.length].append(k, v)
+    end
+
+    self.store = new_store
   end
 
   def bucket(key)

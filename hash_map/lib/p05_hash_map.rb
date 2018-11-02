@@ -9,12 +9,15 @@ class HashMap
   end
 
   def include?(key)
+    store[key.hash % num_buckets].include?(key)
   end
 
   def set(key, val)
+    store[key.hash % num_buckets].append(key, val)
   end
 
   def get(key)
+    store[key.hash % num_buckets].get(key)
   end
 
   def delete(key)
@@ -35,9 +38,10 @@ class HashMap
   alias_method :[]=, :set
 
   private
+  attr_reader :store
 
   def num_buckets
-    @store.length
+    store.length
   end
 
   def resize!

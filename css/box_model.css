@@ -4,9 +4,10 @@ div {
 #first-div {
   background-color: #39cccc;
   width: 200px;
-  height: 200px;
+  /* height: 200px; */
   padding: 50px;
   border: 5px solid black;
+  box-sizing: border-box;
 }
 
 #second-div {
@@ -15,6 +16,7 @@ div {
   height: 200px;
   padding: 50px;
   border: 5px solid black;
+  box-sizing: border-box;
 }
 
 p {

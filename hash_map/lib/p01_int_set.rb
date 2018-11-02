@@ -1,3 +1,5 @@
+require 'byebug'
+
 class MaxIntSet
   def initialize(max)
     @store = Array.new(max) { false }
@@ -66,24 +68,46 @@ class ResizingIntSet
   end
 
   def insert(num)
+    return nil if self.include?(num)
+
+    self.count += 1
+    resize! if self.count > store.length
+
+    self[num] << num
   end
 
   def remove(num)
+    return nil if !include?(num)
+
+    self.count -= 1
+
+    self[num].delete_at(self[num].find_index(num))
   end
 
   def include?(num)
+    self[num].include?(num)
   end
 
   private
+  attr_accessor :store
+  attr_writer :count
 
   def [](num)
-    # optional but useful; return the bucket corresponding to `num`
+    store[num % num_buckets]
   end
 
   def num_buckets
-    @store.length
+    store.length
   end
 
   def resize!
+    new_store = Array.new(store.length * 2) { Array.new }
+
+    store.each do |array|
+      array.each do |num|
+        new_store[num % new_store.length] << num
+      end
+    end
+    self.store = new_store
   end
 end

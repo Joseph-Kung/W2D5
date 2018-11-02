@@ -1,6 +1,7 @@
 require_relative 'p04_linked_list'
 
 class HashMap
+  include Enumerable
   attr_accessor :count
 
   def initialize(num_buckets = 8)
@@ -13,7 +14,10 @@ class HashMap
   end
 
   def set(key, val)
-    store[key.hash % num_buckets].append(key, val)
+    list = store[key.hash % num_buckets]
+    list.update(key, val) if list.include?(key)
+
+    list.append(key, val)
   end
 
   def get(key)
@@ -21,9 +25,15 @@ class HashMap
   end
 
   def delete(key)
+    store[key.hash % num_buckets].remove(key)
   end
 
-  def each
+  def each(&prc)
+    store.each do |list|
+      list.each { |node| prc.call(node.key, node.val) }
+    end
+
+    self
   end
 
   # uncomment when you have Enumerable included

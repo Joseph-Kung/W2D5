@@ -51,6 +51,11 @@ class LinkedList
   end
 
   def get(key)
+    each do |node|
+      return node.val if node.key == key
+    end
+
+    nil
   end
 
   def include?(key)
@@ -72,7 +77,16 @@ class LinkedList
   end
 
   def remove(key)
+    self.each do |node|
+      if node.key == key
+        node.prev.next = node.next
+        node.next.prev = node.prev
 
+        node.next = nil
+        node.prev = nil
+        return node
+      end
+    end
   end
 
   def each(&prc)

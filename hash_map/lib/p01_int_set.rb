@@ -1,8 +1,11 @@
 class MaxIntSet
   def initialize(max)
+    @store = Array.new(max) { false }
   end
 
   def insert(num)
+    raise 'Out of bounds' unless num.between?(0, store.length - 1)
+    store[num] = true
   end
 
   def remove(num)
@@ -12,6 +15,7 @@ class MaxIntSet
   end
 
   private
+  attr_accessor :store
 
   def is_valid?(num)
   end

@@ -72,7 +72,7 @@ class HashMap
     self.each do |k, v|
       new_store[k.hash % new_store.length].append(k, v)
     end
-
+    # debugger
     self.store = new_store
   end
 
